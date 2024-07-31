@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Sales from "../pages/sales/sales";
 import HomePage from "../pages/home/homePage";
@@ -10,7 +10,9 @@ import Dashboard from "../pages/dashboard/dashboard";
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import ProtectedRoute from '../pages/ProtectedRoute';
 import SignUp from '../pages/SignUp';
+import Login from '../pages/Login';
 import SettingsPage from '../pages/SettingsPage';
+import EditInventory from '../pages/inventoryManagement/EditInventory';
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -27,7 +29,7 @@ const App = () => {
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <div className="flex flex-col flex-1">
           <nav className="bg-teal-200 p-4 flex justify-between items-center">
-            <div className="text-white">Stocks</div>
+            <div className="text-white">Trackata</div>
             <button
               onClick={toggleSidebar}
               className="text-white md:hidden"
@@ -48,7 +50,7 @@ const App = () => {
               </svg>
             </button>
           </nav>
-          <main className=" flex-1 overflow-y-auto">
+          <main className="flex-1 overflow-y-auto">
             <Routes>
               <Route path="/" element={<Navigate to="/home" />} />
               <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
@@ -58,12 +60,13 @@ const App = () => {
               <Route path="/inventory" element={<ProtectedRoute><Inventory /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/inventoryManagement/edit/:id" element={<EditInventory />} />
             </Routes>
           </main>
         </div>
       </div>
     ) : (
-      <Navigate to="/signup" />
+      <Navigate to="/login" />
     );
   };
 
@@ -72,6 +75,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/*" element={<MainRoutes isSidebarOpen={isSidebarOpen} />} />
         </Routes>
       </Router>
